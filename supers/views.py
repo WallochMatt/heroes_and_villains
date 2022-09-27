@@ -6,10 +6,17 @@ from .serializers import SuperSerializer
 from .models import Super
 
 # Create your views here.
-@api_view(['GET', 'POST'])# all with params
+@api_view(['GET', 'POST'])
 def supers_list(request):
     if request.method == 'GET':
+        
+        morality = request.query_params.get('type')
+        
         supers = Super.objects.all()
+        
+        if morality:
+            supers = supers.filter(super_type__type=morality)
+
         serializer = SuperSerializer(supers, many=True)
         return Response(serializer.data)
 
