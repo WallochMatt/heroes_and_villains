@@ -24,12 +24,19 @@ def types_list(request):
 
 
 
-
-
-
-
-
-
 @api_view(['GET', 'PUT', 'DELETE'])
-def individual_type(requst, pk):
+def individual_type(request, pk):
     type_of_super = get_object_or_404(SuperType, pk=pk)
+    if request.method == 'GET':
+        serializer = SuperTypeSerializer(type_of_super)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'PUT':
+        serializer = SuperTypeSerializer(type_of_super, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'DELETE':
+        type_of_super.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
