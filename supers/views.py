@@ -17,13 +17,11 @@ def supers_list(request):
             supers = supers.filter(super_type__type=morality)
             serializer = SuperSerializer(supers, many = True)
             return Response(serializer.data)
-
         else:
             custom_dictionary = {'heroes':[], 'villains': []}
-
             pk = 1
-            for key in custom_dictionary: #iterate through keys, adding on matching types to key #.keys()?
-                temp = Super.objects.filter(super_type_id=pk) #why cant this be detected?
+            for key in custom_dictionary: 
+                temp = Super.objects.filter(super_type_id=pk)
                 serializer = SuperSerializer(temp, many = True)
                 custom_dictionary[key] = serializer.data
                 pk += 1
@@ -31,12 +29,13 @@ def supers_list(request):
             return Response(custom_dictionary, status=status.HTTP_200_OK)
 
 
-
     elif request.method == 'POST':
         serializer = SuperSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
