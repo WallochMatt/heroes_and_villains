@@ -18,29 +18,17 @@ def supers_list(request):
             serializer = SuperSerializer(supers, many = True)
             return Response(serializer.data)
 
-        
-        # heroes = supers.filter(super_type__type = 'Hero')
-        # serializer = SuperSerializer(heroes, many=True)
-        # return Response(serializer.data)
-       
-        else:#for supers.objects if super_type == 'hero'?
+        else:
             custom_dictionary = {'heroes':[], 'villains': []}
 
-            
-            heroes = supers.filter(super_type__type = 'Hero')
-            villains = supers.filter(super_type__type = 'Villain')
-            
-            for hero in heroes:
-                serializer = SuperSerializer(heroes, many = True)
-                custom_dictionary['heroes'] = serializer.data
+            pk = 1
+            for key in custom_dictionary: #iterate through keys, adding on matching types to key #.keys()?
+                temp = Super.objects.filter(super_type_id=pk) #why cant this be detected?
+                serializer = SuperSerializer(temp, many = True)
+                custom_dictionary[key] = serializer.data
+                pk += 1
 
-            for villain in villains:
-                serializer = SuperSerializer(villains, many = True)
-                custom_dictionary['villains'] = serializer.data
-
-
-            return Response(custom_dictionary)
-
+            return Response(custom_dictionary, status=status.HTTP_200_OK)
 
 
 
