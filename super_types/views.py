@@ -9,8 +9,16 @@ from .serializers import SuperTypeSerializer
 
 @api_view(['GET', 'POST'])
 def types_list(request):
-    pass
+    if request.method == 'GET':
+        types = SuperType.objects.all()
+        serializer = SuperTypeSerializer(types, many = True)
+        return Response(serializer.data)
 
+    elif request.method == 'POST':
+        serializer = SuperTypeSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 
