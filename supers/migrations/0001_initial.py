@@ -19,10 +19,15 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=30)),
                 ('alter_ego', models.CharField(max_length=30)),
-                ('primary_ability', models.CharField(max_length=30)),
-                ('secondary_ability', models.CharField(max_length=30)),
                 ('catchphrase', models.CharField(max_length=50)),
                 ('super_type', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='super_types.supertype')),
+            ],
+        ),
+         migrations.CreateModel(
+            name='Power',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=50)),
             ],
         ),
     ]
