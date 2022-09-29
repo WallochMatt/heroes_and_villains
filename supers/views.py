@@ -62,7 +62,7 @@ def individual_super(request, pk):
 
 @api_view(['PATCH'])
 def add_power_to_super(request, pk, set_power):
-    new_power = Power.objects.get(id=set_power)
+    new_power = get_object_or_404(Power, id=set_power)
     super = get_object_or_404(Super, pk=pk)
     if request.method == 'PATCH': 
         super.power.add(new_power)
