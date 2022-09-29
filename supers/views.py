@@ -1,9 +1,12 @@
+from functools import partial
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import SuperSerializer
-from .models import Super
+
+from .serializers import PowerSerializer, SuperSerializer
+from .models import Power, Super
+from supers import serializers
 
 
 # Create your views here.
@@ -54,3 +57,14 @@ def individual_super(request, pk):
     elif request.method == 'DELETE':
         super.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+@api_view(['PATCH'])
+def add_power_to_super(request, pk, set_power):
+    new_power = Power.objects.get(id=set_power)
+    super = get_object_or_404(Super, pk=pk)
+    if request.method == 'PATCH': 
+        super.power.add(new_power)
+        serializer = SuperSerializer(super)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
